@@ -57,11 +57,11 @@ void main() {
     // Add some noise-based distortion to the UV coordinates
     vec2 distortion = vec2(
         noise(uv + uTime * 0.2) * 0.5,
-        noise(uv + uTime * 0.3) * 0.5
+        noise(uv + uTime * 0.3)
     );
 
     uv += distortion;
-    uv.y -= uTime * 2.0;
+    uv.y -= uTime * 1.5;
     uv.x *=2.;
     
     // Generate Voronoi pattern

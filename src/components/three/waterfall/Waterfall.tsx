@@ -19,7 +19,7 @@ export function Waterfall(props: JSX.IntrinsicElements["group"]) {
   const { nodes } = useGLTF("/waterfall-transformed.glb") as GLTFResult;
 
   useControls({
-    uVeronoiScale: { value: 2, min: 0.1, max: 10, step: 0.1, onChange: (value) => (uniforms.uVeronoiScale.value = value) },
+    uVeronoiScale: { value: 1.6, min: 0.1, max: 10, step: 0.1, onChange: (value) => (uniforms.uVeronoiScale.value = value) },
     uWaterColor: {
       value: "#0ba6de",
       onChange: (value) => (uniforms.uWaterColor.value = new THREE.Color(value)),
@@ -33,7 +33,7 @@ export function Waterfall(props: JSX.IntrinsicElements["group"]) {
   const uniforms = useMemo(
     () => ({
       uTime: new Uniform(0),
-      uVeronoiScale: new Uniform(1),
+      uVeronoiScale: new Uniform(1.6),
       uWaterColor: new Uniform(new THREE.Color(0.1, 0.1, 0.1)),
       uWaterAccentColor: new Uniform(new THREE.Color(0.1, 0.1, 0.1)),
     }),
