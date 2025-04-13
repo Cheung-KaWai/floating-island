@@ -18,8 +18,8 @@ interface ExampleState {
 
 const initState = {
   debug: {
-    enable: import.meta.env.MODE === "development",
-    details: true,
+    enable: false,
+    details: false,
   },
   foo: 0,
   bar: "example",
