@@ -3,11 +3,12 @@ import * as THREE from "three";
 import { useGLTF } from "@react-three/drei";
 import { GLTF } from "three-stdlib";
 import { useFrame } from "@react-three/fiber";
-import vertex from "./vertex.glsl";
-import fragment from "./fragment.glsl";
+import vertex from "./shaders/waterFallVertex.glsl";
+import fragment from "./shaders/waterfallFragment.glsl";
 import { useMemo } from "react";
 import { useControls } from "leva";
 import { Uniform } from "three";
+import { Splash } from "./Splash";
 type GLTFResult = GLTF & {
   nodes: {
     water: THREE.Mesh;
@@ -49,6 +50,7 @@ export function Waterfall(props: JSX.IntrinsicElements["group"]) {
       <mesh geometry={nodes.water.geometry}>
         <CustomShaderMaterial baseMaterial={THREE.MeshStandardMaterial} vertexShader={vertex} fragmentShader={fragment} uniforms={uniforms} />
       </mesh>
+      <Splash />
     </group>
   );
 }

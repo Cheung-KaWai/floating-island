@@ -5,7 +5,7 @@ import { Waterfall } from "./waterfall/Waterfall";
 import { Island } from "./Island";
 export const Scene = () => {
   return (
-    <Container $width="70svw">
+    <Container $width="100svw">
       <Canvas>
         <Waterfall />
         <Island />
