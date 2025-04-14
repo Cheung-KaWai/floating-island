@@ -11,7 +11,7 @@ varying float vTextureIndex;
 
 void main() {
   vec4 modelViewPosition = modelViewMatrix * vec4(position, 1.0);
-  csm_PointSize = splashSize * 0.05;
+  csm_PointSize = splashSize * 0.1 * uPixelRatio;
 
   // Calculate time-based movement
   float t = fract(uTime + start);

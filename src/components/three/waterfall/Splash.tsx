@@ -92,6 +92,7 @@ export const Splash = () => {
       uTexture: new Uniform(splashTexture),
       uTexture2: new Uniform(splashTexture2),
       uTexture3: new Uniform(splashTexture3),
+      uPixelRatio: new Uniform(Math.min(window.devicePixelRatio, 2)),
     };
   }, [splashTexture, splashTexture2, splashTexture3]);
 
