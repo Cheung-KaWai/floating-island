@@ -8,7 +8,6 @@ import fragment from "./shaders/waterfallFragment.glsl";
 import { useMemo } from "react";
 import { useControls } from "leva";
 import { Uniform } from "three";
-import { Splash } from "./Splash";
 type GLTFResult = GLTF & {
   nodes: {
     water: THREE.Mesh;
@@ -20,7 +19,7 @@ export function Waterfall(props: JSX.IntrinsicElements["group"]) {
   const { nodes } = useGLTF("/waterfall-transformed.glb") as GLTFResult;
 
   useControls({
-    uVeronoiScale: { value: 1.6, min: 0.1, max: 10, step: 0.1, onChange: (value) => (uniforms.uVeronoiScale.value = value) },
+    uVeronoiScale: { value: 2, min: 0.1, max: 10, step: 0.1, onChange: (value) => (uniforms.uVeronoiScale.value = value) },
     uWaterColor: {
       value: "#0ba6de",
       onChange: (value) => (uniforms.uWaterColor.value = new THREE.Color(value)),
@@ -45,12 +44,13 @@ export function Waterfall(props: JSX.IntrinsicElements["group"]) {
     uniforms.uTime.value = state.clock.getElapsedTime();
   });
 
+  console.log(nodes.water.geometry);
+
   return (
     <group {...props} dispose={null}>
       <mesh geometry={nodes.water.geometry}>
         <CustomShaderMaterial baseMaterial={THREE.MeshStandardMaterial} vertexShader={vertex} fragmentShader={fragment} uniforms={uniforms} />
       </mesh>
-      <Splash />
     </group>
   );
 }

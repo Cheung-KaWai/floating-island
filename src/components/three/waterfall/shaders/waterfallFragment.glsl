@@ -1,4 +1,9 @@
+#include "./lightDirectional.glsl"
+#include "./lightPoint.glsl"
+
 varying vec2 vUv;
+varying vec3 vNormal2;
+varying vec3 vPosition;
 
 uniform float uTime;
 uniform float uVeronoiScale;
@@ -51,6 +56,31 @@ vec3 voronoi(vec2 x) {
 
 
 void main() {
+    vec3 viewDirection = normalize(vPosition - cameraPosition);
+    vec3 normal2 = normalize(vNormal2);
+    vec3 light = vec3(0.0);
+
+    light += directionalLight(
+        vec3(1., 1., 3.), // color
+        0.5, // intensity
+        normal2, 
+        vec3(5.,10.,0.), // position
+        viewDirection, 
+        1. // specular power
+    );
+
+    light += pointLight(
+        vec3(1., 1., 3.), // color
+        0.5, // intensity
+        normal2, 
+        vec3(15.,7.,0.), // position
+        viewDirection, 
+        1., // specular power
+        vPosition,
+        0.01
+    );
+
+
     // Scale the UV coordinates and add time-based vertical movement
     vec2 uv = vUv * 10.0;
     
@@ -74,6 +104,10 @@ void main() {
     color += noise(uv * 2.0 + uTime) * 0.1;
 
     vec3 waterColor = mix(uWaterColor, uWaterAccentColor, color);
+    waterColor *= light;
     
     csm_FragColor = vec4(waterColor, 1.0);
+
+    #include <tonemapping_fragment>
+    #include <colorspace_fragment>
 }

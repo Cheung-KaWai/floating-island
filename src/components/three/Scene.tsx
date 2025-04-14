@@ -3,6 +3,7 @@ import { CameraControls, Environment } from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
 import { Waterfall } from "./waterfall/Waterfall";
 import { Island } from "./Island";
+
 export const Scene = () => {
   return (
     <Container $width="100svw">

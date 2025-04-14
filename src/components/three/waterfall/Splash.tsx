@@ -8,7 +8,7 @@ export const Splash = () => {
       const i3 = i * 3;
       positionsArray[i3] = Math.random() - 0.5;
       positionsArray[i3 + 1] = Math.random() - 0.5;
-      positionsArray[i3 + 2] = Math.random() - 0.5;
+      positionsArray[i3 + 2] = i - 5;
     }
 
     const geometry = new THREE.BufferGeometry();
