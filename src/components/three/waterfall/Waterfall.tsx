@@ -21,7 +21,7 @@ export function Waterfall(props: JSX.IntrinsicElements["group"]) {
   useControls({
     uVeronoiScale: { value: 2, min: 0.1, max: 10, step: 0.1, onChange: (value) => (uniforms.uVeronoiScale.value = value) },
     uWaterColor: {
-      value: "#0ba6de",
+      value: "#367e96",
       onChange: (value) => (uniforms.uWaterColor.value = new THREE.Color(value)),
     },
     uWaterAccentColor: {

@@ -11,8 +11,6 @@ import { Uniform } from "three";
 import { useTexture } from "@react-three/drei";
 export const Splash = () => {
   const waterTexture = useTexture("/textures/water.png");
-  const waterTexture2 = useTexture("/textures/water2.png");
-  const waterTexture3 = useTexture("/textures/water3.png");
 
   const splashTexture = useTexture("/textures/splash.png");
   const splashTexture2 = useTexture("/textures/splash2.png");
@@ -32,7 +30,7 @@ export const Splash = () => {
       positionsArray[i3 + 1] = 0;
       positionsArray[i3 + 2] = Math.random() * 7;
       speedArray[i] = 5 + Math.random() * 20;
-      splashSizeArray[i] = Math.random() * 5;
+      splashSizeArray[i] = Math.random() * 7;
       startArray[i] = Math.random();
       offsetArray[i] = (Math.random() - 0.5) * 2;
       textureIndexArray[i] = Math.floor(Math.random() * 3);
@@ -87,10 +85,8 @@ export const Splash = () => {
       uTime: new Uniform(0),
       uPixelRatio: new Uniform(Math.min(window.devicePixelRatio, 2)),
       uTexture: new Uniform(waterTexture),
-      uTexture2: new Uniform(waterTexture2),
-      uTexture3: new Uniform(waterTexture3),
     };
-  }, [waterTexture, waterTexture2, waterTexture3]);
+  }, [waterTexture]);
 
   const uniformsStoneSplash = useMemo(() => {
     return {
