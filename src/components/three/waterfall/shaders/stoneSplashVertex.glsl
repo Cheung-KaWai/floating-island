@@ -9,6 +9,6 @@ varying float vTextureIndex;
 
 void main() {
   csm_Position += offset * 0.5;
-  csm_PointSize = splashSize * 0.4 * fract(uTime + start) * uPixelRatio;
+  csm_PointSize = splashSize * 0.5 * fract(uTime + start) * uPixelRatio;
   vTextureIndex = textureIndex;
 }
