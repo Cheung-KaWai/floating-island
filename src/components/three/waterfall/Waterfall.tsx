@@ -49,7 +49,13 @@ export function Waterfall(props: JSX.IntrinsicElements["group"]) {
   return (
     <group {...props} dispose={null}>
       <mesh geometry={nodes.water.geometry}>
-        <CustomShaderMaterial baseMaterial={THREE.MeshStandardMaterial} vertexShader={vertex} fragmentShader={fragment} uniforms={uniforms} />
+        <CustomShaderMaterial
+          baseMaterial={THREE.MeshStandardMaterial}
+          vertexShader={vertex}
+          fragmentShader={fragment}
+          uniforms={uniforms}
+          transparent
+        />
       </mesh>
     </group>
   );

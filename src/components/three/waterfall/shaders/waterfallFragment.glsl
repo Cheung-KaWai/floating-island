@@ -106,7 +106,7 @@ void main() {
     vec3 waterColor = mix(uWaterColor, uWaterAccentColor, color);
     waterColor *= light;
     
-    csm_FragColor = vec4(waterColor, 1.0);
+    csm_FragColor = vec4(waterColor, 0.85);
 
     #include <tonemapping_fragment>
     #include <colorspace_fragment>
