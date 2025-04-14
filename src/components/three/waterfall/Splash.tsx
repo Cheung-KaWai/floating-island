@@ -17,7 +17,7 @@ export const Splash = () => {
   const splashTexture3 = useTexture("/textures/splash3.png");
 
   const geometry = useMemo(() => {
-    const count = 1000;
+    const count = 2000;
     const positionsArray = new Float32Array(count * 3);
     const speedArray = new Float32Array(count);
     const splashSizeArray = new Float32Array(count);
@@ -28,7 +28,7 @@ export const Splash = () => {
       const i3 = i * 3;
       positionsArray[i3] = 0;
       positionsArray[i3 + 1] = 0;
-      positionsArray[i3 + 2] = Math.random() * 7;
+      positionsArray[i3 + 2] = Math.random() * 5;
       speedArray[i] = 5 + Math.random() * 20;
       splashSizeArray[i] = Math.random() * 7;
       startArray[i] = Math.random();
@@ -43,8 +43,6 @@ export const Splash = () => {
     geometry.setAttribute("start", new THREE.BufferAttribute(startArray, 1));
     geometry.setAttribute("offset", new THREE.BufferAttribute(offsetArray, 1));
     geometry.setAttribute("textureIndex", new THREE.BufferAttribute(textureIndexArray, 1));
-
-    console.log(geometry.attributes.textureIndex);
     return geometry;
   }, []);
 
@@ -58,7 +56,7 @@ export const Splash = () => {
     const textureIndexArray = new Float32Array(count);
     for (let i = 0; i < count; i++) {
       const i3 = i * 3;
-      positionsArray[i3] = Math.random() * 2;
+      positionsArray[i3] = Math.random() * 3;
       positionsArray[i3 + 1] = Math.random() * 2;
       positionsArray[i3 + 2] = Math.random() * 7;
       speedArray[i] = 5 + Math.random() * 20;
@@ -104,7 +102,7 @@ export const Splash = () => {
 
   return (
     <>
-      <points geometry={geometry} position={[15, 5, -4]}>
+      <points geometry={geometry} position={[15, 5, -2.5]}>
         <CustomShaderMaterial
           baseMaterial={THREE.PointsMaterial}
           vertexShader={vertex}
