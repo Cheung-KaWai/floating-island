@@ -30,7 +30,7 @@ export const Splash = () => {
       positionsArray[i3 + 1] = 0;
       positionsArray[i3 + 2] = Math.random() * 5;
       speedArray[i] = 5 + Math.random() * 20;
-      splashSizeArray[i] = Math.random() * 7;
+      splashSizeArray[i] = Math.random() * 10;
       startArray[i] = Math.random();
       offsetArray[i] = (Math.random() - 0.5) * 2;
       textureIndexArray[i] = Math.floor(Math.random() * 3);
@@ -56,11 +56,11 @@ export const Splash = () => {
     const textureIndexArray = new Float32Array(count);
     for (let i = 0; i < count; i++) {
       const i3 = i * 3;
-      positionsArray[i3] = Math.random() * 3;
-      positionsArray[i3 + 1] = Math.random() * 2;
-      positionsArray[i3 + 2] = Math.random() * 7;
+      positionsArray[i3] = Math.random() * 2.5;
+      positionsArray[i3 + 1] = Math.random() * 1.5;
+      positionsArray[i3 + 2] = Math.random() * 4;
       speedArray[i] = 5 + Math.random() * 20;
-      splashSizeArray[i] = Math.random() * 5;
+      splashSizeArray[i] = Math.random() * 3;
       startArray[i] = Math.random();
       offsetArray[i] = (Math.random() - 0.5) * 5;
       offsetArray[i + 1] = (Math.random() - 0.5) * 5;
@@ -114,7 +114,7 @@ export const Splash = () => {
           depthWrite={false}
         />
       </points>
-      <points geometry={geometryStoneSplash} position={[14, -3, -4]}>
+      <points geometry={geometryStoneSplash} position={[14, -2, -2]}>
         <CustomShaderMaterial
           baseMaterial={THREE.PointsMaterial}
           vertexShader={stoneSplashVertex}
