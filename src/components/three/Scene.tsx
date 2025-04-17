@@ -5,6 +5,7 @@ import { Splash } from "./waterfall/Splash";
 import { Island } from "./Island";
 import { Waterfall } from "./waterfall/Waterfall";
 import { Rock } from "./waterfall/Rock";
+import { Tree } from "./tree/Tree";
 export const Scene = () => {
   return (
     <Container $width="100svw">
@@ -15,6 +16,7 @@ export const Scene = () => {
         <Splash />
         <CameraControls camera-position={[30, 10, 0]} />
         <Environment preset="sunset" />
+        <Tree />
       </Canvas>
     </Container>
   );
