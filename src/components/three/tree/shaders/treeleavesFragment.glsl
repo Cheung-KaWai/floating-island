@@ -1,9 +1,13 @@
-uniform sampler2D uTexture;
-uniform vec3 uColor;
+
 varying vec2 vUv;
+varying vec3 vNormal2;
+
 void main() {
-  vec4 color = texture2D(uTexture, vUv);
+  vec3 normal2 = normalize(vNormal2);
   
-  color.rgb *= uColor;
-  csm_DiffuseColor = color;
+  if (!gl_FrontFacing) {
+    normal2 = -normal2;
+  }
+  
+  csm_FragNormal = normal2;
 }

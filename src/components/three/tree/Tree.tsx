@@ -3,12 +3,13 @@ import * as THREE from "three";
 import { useGLTF, useTexture } from "@react-three/drei";
 import { GLTF } from "three-stdlib";
 import leavesPositions from "./leaves-position.json";
-import { useMemo, useRef, useEffect } from "react";
+import { useMemo } from "react";
 import CustomShaderMaterial from "three-custom-shader-material";
-import { Uniform } from "three";
+import { DoubleSide, Uniform } from "three";
 import treeLeavesVertex from "./shaders/treeleavesVertex.glsl";
 import treeLeavesFragment from "./shaders/treeleavesFragment.glsl";
 import { useFrame } from "@react-three/fiber";
+import { mergeGeometries } from "three/examples/jsm/utils/BufferGeometryUtils.js";
 
 type GLTFResult = GLTF & {
   nodes: {
@@ -20,8 +21,7 @@ type GLTFResult = GLTF & {
 export function Tree(props: JSX.IntrinsicElements["group"]) {
   const { nodes } = useGLTF("/tree-transformed.glb") as GLTFResult;
   const sakuraLeaf = useTexture("/textures/sakura.png");
-  const instancedMeshRef = useRef<THREE.InstancedMesh>(null);
-
+  const sakuraMatcap = useTexture("/textures/matcap.png");
   const uniforms = useMemo(() => {
     return {
       uTexture: new Uniform(sakuraLeaf),
@@ -31,72 +31,77 @@ export function Tree(props: JSX.IntrinsicElements["group"]) {
   }, []);
 
   const instanceCount = leavesPositions.length;
-  const randomOffset = 2;
 
-  useEffect(() => {
-    if (!instancedMeshRef.current) return;
+  useFrame(() => {
+    uniforms.uTime.value += 0.01;
+  });
 
+  const mergedGeometry = useMemo(() => {
+    const count = instanceCount;
+    const leaves = [];
     const matrix = new THREE.Matrix4();
     const position = new THREE.Vector3();
     const rotation = new THREE.Euler();
     const quaternion = new THREE.Quaternion();
-    const scale = new THREE.Vector3(0.6, 0.6, 0.6);
 
-    // Create instance attributes for random offsets and phases
-    const randomOffsets = new Float32Array(instanceCount * 3);
-    const randomPhases = new Float32Array(instanceCount);
+    for (let i = 0; i < count; i++) {
+      const leaf = new THREE.PlaneGeometry(1, 1);
+      leaves.push(leaf);
 
-    for (let i = 0; i < instanceCount; i++) {
-      // Set position with random offset
-      position.set(
-        leavesPositions[i][0] + (Math.random() - 0.5) * randomOffset,
-        leavesPositions[i][2] + (Math.random() - 0.5),
-        -leavesPositions[i][1] + (Math.random() - 0.5) * randomOffset
-      );
+      position.set(leavesPositions[i][0], leavesPositions[i][2], -leavesPositions[i][1]);
 
       // Random rotation for more natural look
       rotation.set(Math.random() * Math.PI, Math.random() * Math.PI, Math.random() * Math.PI);
       quaternion.setFromEuler(rotation);
 
       // Set the matrix for this instance
-      matrix.compose(position, quaternion, scale);
-      instancedMeshRef.current.setMatrixAt(i, matrix);
+      matrix.compose(position, quaternion, new THREE.Vector3(0.4, 0.4, 0.4));
+      leaf.applyMatrix4(matrix);
 
-      // Set random offsets and phases for each instance
-      randomOffsets[i * 3] = Math.random() * 2.0 - 1.0; // x offset
-      randomOffsets[i * 3 + 1] = Math.random() * 2.0 - 1.0; // y offset
-      randomOffsets[i * 3 + 2] = Math.random() * 2.0 - 1.0; // z offset
-      randomPhases[i] = Math.random() * Math.PI * 2.0; // random phase
+      // Normal
+      const normal = position.clone().normalize();
+      const normalArray = new Float32Array(12);
+      for (let i = 0; i < 4; i++) {
+        const i3 = i * 3;
+
+        const position = new THREE.Vector3(
+          leaf.attributes.position.array[i3],
+          leaf.attributes.position.array[i3 + 1],
+          leaf.attributes.position.array[i3 + 2]
+        );
+
+        const mixedNormal = position.lerp(normal, 0.4);
+
+        normalArray[i3] = mixedNormal.x;
+        normalArray[i3 + 1] = mixedNormal.y;
+        normalArray[i3 + 2] = mixedNormal.z;
+      }
+      leaf.setAttribute("normal", new THREE.BufferAttribute(normalArray, 3));
     }
 
-    instancedMeshRef.current.instanceMatrix.needsUpdate = true;
-
-    // Add the attributes to the geometry
-    const geometry = instancedMeshRef.current.geometry;
-    geometry.setAttribute("randomOffset", new THREE.InstancedBufferAttribute(randomOffsets, 3));
-    geometry.setAttribute("randomPhase", new THREE.InstancedBufferAttribute(randomPhases, 1));
-  }, [instanceCount]);
-
-  useFrame(() => {
-    uniforms.uTime.value += 0.01;
-  });
+    const geometry = mergeGeometries(leaves);
+    return geometry;
+  }, []);
 
   return (
     <>
-      <group {...props} dispose={null}>
-        <mesh geometry={nodes.Cube001.geometry} material={nodes.Cube001.material} />
-      </group>
-      <instancedMesh ref={instancedMeshRef} args={[new THREE.PlaneGeometry(0.5, 0.5), undefined, instanceCount]} frustumCulled={false}>
+      <mesh geometry={mergedGeometry}>
         <CustomShaderMaterial
-          baseMaterial={THREE.MeshStandardMaterial}
+          baseMaterial={THREE.MeshMatcapMaterial}
           uniforms={uniforms}
           vertexShader={treeLeavesVertex}
           fragmentShader={treeLeavesFragment}
           transparent
-          side={THREE.DoubleSide}
+          side={DoubleSide}
+          // matcap={sakuraLeaf}
+          alphaMap={sakuraLeaf}
+          matcap={sakuraMatcap}
           depthWrite={false}
         />
-      </instancedMesh>
+      </mesh>
+      <group {...props} dispose={null}>
+        <mesh geometry={nodes.Cube001.geometry} material={nodes.Cube001.material} />
+      </group>
     </>
   );
 }
