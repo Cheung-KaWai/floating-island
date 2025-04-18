@@ -24,7 +24,7 @@ export function Tree(props: JSX.IntrinsicElements["group"]) {
   const sakuraMatcap = useTexture("/textures/matcap.png");
   const uniforms = useMemo(() => {
     return {
-      uTexture: new Uniform(sakuraLeaf),
+      uAlphaMap: new Uniform(sakuraLeaf),
       uColor: new Uniform(new THREE.Color("#ffb8e0")),
       uTime: new Uniform(0),
     };
@@ -43,12 +43,17 @@ export function Tree(props: JSX.IntrinsicElements["group"]) {
     const position = new THREE.Vector3();
     const rotation = new THREE.Euler();
     const quaternion = new THREE.Quaternion();
+    const randomOffset = 2;
 
     for (let i = 0; i < count; i++) {
       const leaf = new THREE.PlaneGeometry(1, 1);
       leaves.push(leaf);
 
-      position.set(leavesPositions[i][0], leavesPositions[i][2], -leavesPositions[i][1]);
+      position.set(
+        leavesPositions[i][0] + (Math.random() - 0.5) * randomOffset,
+        leavesPositions[i][2] + (Math.random() - 0.5) * randomOffset,
+        -leavesPositions[i][1] + (Math.random() - 0.5) * randomOffset
+      );
 
       // Random rotation for more natural look
       rotation.set(Math.random() * Math.PI, Math.random() * Math.PI, Math.random() * Math.PI);
@@ -69,6 +74,8 @@ export function Tree(props: JSX.IntrinsicElements["group"]) {
           leaf.attributes.position.array[i3 + 1],
           leaf.attributes.position.array[i3 + 2]
         );
+
+        position.sub(new THREE.Vector3(0, 3, 0));
 
         const mixedNormal = position.lerp(normal, 0.4);
 
@@ -93,10 +100,7 @@ export function Tree(props: JSX.IntrinsicElements["group"]) {
           fragmentShader={treeLeavesFragment}
           transparent
           side={DoubleSide}
-          // matcap={sakuraLeaf}
-          alphaMap={sakuraLeaf}
           matcap={sakuraMatcap}
-          depthWrite={false}
         />
       </mesh>
       <group {...props} dispose={null}>
