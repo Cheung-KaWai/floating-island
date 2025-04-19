@@ -1,8 +1,10 @@
 varying vec2 vUv;
 varying vec3 vNormal2;
 varying vec3 vPosition;
+varying float vDistance;
 uniform float uTime;
 uniform sampler2D uNoise;
+
 
 // return a value between 0 and 1 based on the given value and the min and max range
 float inverseLerp(float v,float minValue,float maxValue){
@@ -27,5 +29,14 @@ void main() {
 
   csm_Position.z   += posY * sin(uTime*2.5 + noiseV1.r * 5.) * 0.3;
   csm_Position.x   += posY * sin(uTime*2.5 + noiseV1.g * 5.) * 0.3;
+
+  float distanceCenter = distance(csm_Position, vec3(0., 11., 0.));
+  float distanceRight = distance(csm_Position, vec3(-10., 0.,-10.));
+  distanceCenter = remap(distanceCenter, 0., 12., 0., 1.);
+  distanceRight = remap(distanceRight, 0., 20., 0., 1.);
+  distanceRight = pow(distanceRight, 10.);
+
+  vPosition = csm_Position;
+  vDistance = distanceRight * distanceCenter;
 
 }

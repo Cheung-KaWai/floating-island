@@ -10,6 +10,7 @@ import treeLeavesVertex from "./shaders/treeleavesVertex.glsl";
 import treeLeavesFragment from "./shaders/treeleavesFragment.glsl";
 import { useFrame } from "@react-three/fiber";
 import { mergeGeometries } from "three/examples/jsm/utils/BufferGeometryUtils.js";
+import { useControls } from "leva";
 
 type GLTFResult = GLTF & {
   nodes: {
@@ -22,12 +23,33 @@ export function Tree(props: JSX.IntrinsicElements["group"]) {
   const { nodes } = useGLTF("/tree-transformed.glb") as GLTFResult;
   const sakuraLeaf = useTexture("/textures/sakura.png");
   const noise = useTexture("/textures/noise.png");
+  const matcap = useTexture("/textures/matcap.png");
+
+  useControls("tree", {
+    uColor: {
+      value: "#e78fef",
+      label: "Primary Color",
+      onChange: (value) => {
+        uniforms.uColor.value = new THREE.Color(value);
+      },
+    },
+    uColor2: {
+      value: "#ff7cc6",
+      label: "Secondary Color",
+      onChange: (value) => {
+        uniforms.uColor2.value = new THREE.Color(value);
+      },
+    },
+  });
+
   const uniforms = useMemo(() => {
     return {
       uAlphaMap: new Uniform(sakuraLeaf),
       uColor: new Uniform(new THREE.Color("#ffb8e0")),
+      uColor2: new Uniform(new THREE.Color("#ffb8e0")),
       uTime: new Uniform(0),
       uNoise: new Uniform(noise),
+      uMatcap: new Uniform(matcap),
     };
   }, []);
 
@@ -92,7 +114,7 @@ export function Tree(props: JSX.IntrinsicElements["group"]) {
   }, []);
 
   return (
-    <>
+    <group>
       <mesh geometry={mergedGeometry}>
         <CustomShaderMaterial
           baseMaterial={THREE.MeshStandardMaterial}
@@ -106,7 +128,7 @@ export function Tree(props: JSX.IntrinsicElements["group"]) {
       <group {...props} dispose={null}>
         <mesh geometry={nodes.Cube001.geometry} material={nodes.Cube001.material} />
       </group>
-    </>
+    </group>
   );
 }
 
