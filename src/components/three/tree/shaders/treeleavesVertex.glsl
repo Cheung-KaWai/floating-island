@@ -34,7 +34,7 @@ void main() {
   float distanceRight = distance(csm_Position, vec3(-10., 0.,-10.));
   distanceCenter = remap(distanceCenter, 0., 12., 0., 1.);
   distanceRight = remap(distanceRight, 0., 20., 0., 1.);
-  distanceRight = pow(distanceRight, 10.);
+  distanceRight = pow(distanceRight, 2.);
 
   vPosition = csm_Position;
   vDistance = distanceRight * distanceCenter;

@@ -27,7 +27,7 @@ export function Tree(props: JSX.IntrinsicElements["group"]) {
 
   useControls("tree", {
     uColor: {
-      value: "#e78fef",
+      value: "#abf9ff",
       label: "Primary Color",
       onChange: (value) => {
         uniforms.uColor.value = new THREE.Color(value);
@@ -123,6 +123,7 @@ export function Tree(props: JSX.IntrinsicElements["group"]) {
           fragmentShader={treeLeavesFragment}
           transparent
           side={DoubleSide}
+          metalness={1}
         />
       </mesh>
       <group {...props} dispose={null}>
