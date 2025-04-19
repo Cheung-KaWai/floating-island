@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useMemo } from "react";
 import * as THREE from "three";
 import CustomShaderMaterial from "three-custom-shader-material";
@@ -13,8 +14,6 @@ export const Splash = () => {
   const waterTexture = useTexture("/textures/water.png");
 
   const splashTexture = useTexture("/textures/splash.png");
-  const splashTexture2 = useTexture("/textures/splash2.png");
-  const splashTexture3 = useTexture("/textures/splash3.png");
 
   const geometry = useMemo(() => {
     const count = 2000;
@@ -84,17 +83,15 @@ export const Splash = () => {
       uPixelRatio: new Uniform(Math.min(window.devicePixelRatio, 2)),
       uTexture: new Uniform(waterTexture),
     };
-  }, [waterTexture]);
+  }, []);
 
   const uniformsStoneSplash = useMemo(() => {
     return {
       uTime: new Uniform(0),
       uTexture: new Uniform(splashTexture),
-      uTexture2: new Uniform(splashTexture2),
-      uTexture3: new Uniform(splashTexture3),
       uPixelRatio: new Uniform(Math.min(window.devicePixelRatio, 2)),
     };
-  }, [splashTexture, splashTexture2, splashTexture3]);
+  }, []);
 
   useFrame((state) => {
     uniforms.uTime.value = state.clock.getElapsedTime();

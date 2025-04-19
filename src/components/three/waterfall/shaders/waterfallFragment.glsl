@@ -77,7 +77,7 @@ void main() {
         viewDirection, 
         1., // specular power
         vPosition,
-        0.01
+        1.
     );
 
 
@@ -106,7 +106,7 @@ void main() {
     vec3 waterColor = mix(uWaterColor, uWaterAccentColor, color);
     waterColor *= light;
     
-    csm_FragColor = vec4(waterColor, 0.8);
+    csm_FragColor = vec4(waterColor, 0.5);
 
     #include <tonemapping_fragment>
     #include <colorspace_fragment>

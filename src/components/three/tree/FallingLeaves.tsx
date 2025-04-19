@@ -53,17 +53,20 @@ export const FallingLeaves = () => {
     const positionsArray = new Float32Array(count * 3);
     const speedArray = new Float32Array(count);
     const delayStartArray = new Float32Array(count);
+    const randomAngleArray = new Float32Array(count);
     for (let i = 0; i < count; i++) {
       positionsArray[i * 3] = center.x + (Math.random() - 0.5) * spread;
       positionsArray[i * 3 + 1] = center.y + (Math.random() - 0.5) * spread * 0.5;
       positionsArray[i * 3 + 2] = center.z + (Math.random() - 0.5) * spread;
       speedArray[i] = 0.1 + Math.random();
       delayStartArray[i] = Math.random();
+      randomAngleArray[i] = (Math.random() - 0.5) * 2 * 360;
     }
 
     geometry.setAttribute("position", new BufferAttribute(positionsArray, 3));
     geometry.setAttribute("speed", new BufferAttribute(speedArray, 1));
     geometry.setAttribute("delayStart", new BufferAttribute(delayStartArray, 1));
+    geometry.setAttribute("randomAngle", new BufferAttribute(randomAngleArray, 1));
     return geometry;
   }, []);
 

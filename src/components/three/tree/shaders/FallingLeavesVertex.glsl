@@ -2,8 +2,10 @@ varying float vDistance;
 uniform float uTime;
 attribute float speed;
 attribute float delayStart;
+attribute float randomAngle;
 uniform sampler2D uNoise;
 varying float vNoise;
+varying float vRandomAngle;
 float inverseLerp(float v,float minValue,float maxValue){
   return(v-minValue)/(maxValue-minValue);
 }
@@ -34,6 +36,7 @@ void main() {
   gl_PointSize *= 1.+noise;
 
   vNoise = noise;
+  vRandomAngle = randomAngle;
 
 
 }
