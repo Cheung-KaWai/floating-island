@@ -18,4 +18,7 @@ void main() {
       color *= textureColor3;
     }
     csm_FragColor = color;
+
+    #include <tonemapping_fragment>
+    #include <colorspace_fragment>
 }

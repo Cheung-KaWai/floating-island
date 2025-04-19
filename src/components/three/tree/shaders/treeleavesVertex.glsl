@@ -1,35 +1,31 @@
 varying vec2 vUv;
 varying vec3 vNormal2;
-
+varying vec3 vPosition;
 uniform float uTime;
+uniform sampler2D uNoise;
 
-// Noise functions
-float random(vec2 st) {
-    return fract(sin(dot(st.xy, vec2(12.9898,78.233))) * 43758.5453123);
+// return a value between 0 and 1 based on the given value and the min and max range
+float inverseLerp(float v,float minValue,float maxValue){
+  return(v-minValue)/(maxValue-minValue);
 }
 
-float noise(vec2 st) {
-    vec2 i = floor(st);
-    vec2 f = fract(st);
-    
-    float a = random(i);
-    float b = random(i + vec2(1.0, 0.0));
-    float c = random(i + vec2(0.0, 1.0));
-    float d = random(i + vec2(1.0, 1.0));
-
-    vec2 u = f * f * (3.0 - 2.0 * f);
-    return mix(a, b, u.x) + (c - a)* u.y * (1.0 - u.x) + (d - b) * u.x * u.y;
+// remap values to a min and max range
+float remap(float v,float inMin,float inMax,float outMin,float outMax){
+  float t=inverseLerp(v,inMin,inMax);
+  return mix(outMin,outMax,t);
 }
 
 void main() {
   vUv = uv;
   vNormal2 = normalize(csm_Normal);
 
-  // Create noise-based movement
-  float noiseZ = noise(vec2(csm_Position.y * 0.1, uTime + 20.0));
-  
-  // Combine noise with existing sine wave for more natural movement
-  float sway = sin(csm_Position.y * 0.5 + uTime *3.0) * 0.5;
-  
-  csm_Position.z += (csm_Position.x + csm_Position.z) * (sway + noiseZ) * 0.03;
+  float posZ = remap(csm_Position.z,3.,-8., 0., 1.);
+  float posX = remap(csm_Position.x,5.,-10., 0., 1.);
+  float posY = remap(csm_Position.y,9.,20., 0., 1.);
+
+  vec4 noiseV1 = texture2D(uNoise, vec2(posX, posZ));
+
+  csm_Position.z   += posY * sin(uTime*2.5 + noiseV1.r * 5.) * 0.3;
+  csm_Position.x   += posY * sin(uTime*2.5 + noiseV1.g * 5.) * 0.3;
+
 }

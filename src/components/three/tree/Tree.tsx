@@ -21,12 +21,13 @@ type GLTFResult = GLTF & {
 export function Tree(props: JSX.IntrinsicElements["group"]) {
   const { nodes } = useGLTF("/tree-transformed.glb") as GLTFResult;
   const sakuraLeaf = useTexture("/textures/sakura.png");
-  const sakuraMatcap = useTexture("/textures/matcap.png");
+  const noise = useTexture("/textures/noise.png");
   const uniforms = useMemo(() => {
     return {
       uAlphaMap: new Uniform(sakuraLeaf),
       uColor: new Uniform(new THREE.Color("#ffb8e0")),
       uTime: new Uniform(0),
+      uNoise: new Uniform(noise),
     };
   }, []);
 
@@ -75,7 +76,7 @@ export function Tree(props: JSX.IntrinsicElements["group"]) {
           leaf.attributes.position.array[i3 + 2]
         );
 
-        position.sub(new THREE.Vector3(0, 3, 0));
+        position.sub(new THREE.Vector3(0, 10, 0));
 
         const mixedNormal = position.lerp(normal, 0.4);
 
@@ -94,13 +95,12 @@ export function Tree(props: JSX.IntrinsicElements["group"]) {
     <>
       <mesh geometry={mergedGeometry}>
         <CustomShaderMaterial
-          baseMaterial={THREE.MeshMatcapMaterial}
+          baseMaterial={THREE.MeshStandardMaterial}
           uniforms={uniforms}
           vertexShader={treeLeavesVertex}
           fragmentShader={treeLeavesFragment}
           transparent
           side={DoubleSide}
-          matcap={sakuraMatcap}
         />
       </mesh>
       <group {...props} dispose={null}>
