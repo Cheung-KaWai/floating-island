@@ -115,7 +115,7 @@ export function Tree(props: JSX.IntrinsicElements["group"]) {
   }, []);
 
   return (
-    <>
+    <group position={[0, 0, 0]}>
       <mesh geometry={mergedGeometry}>
         <CustomShaderMaterial
           baseMaterial={THREE.MeshStandardMaterial}
@@ -131,7 +131,7 @@ export function Tree(props: JSX.IntrinsicElements["group"]) {
         <mesh geometry={nodes.Cube001.geometry} material={nodes.Cube001.material} />
       </group>
       <FallingLeaves />
-    </>
+    </group>
   );
 }
 
