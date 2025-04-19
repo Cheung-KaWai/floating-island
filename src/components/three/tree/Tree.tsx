@@ -11,6 +11,7 @@ import treeLeavesFragment from "./shaders/treeleavesFragment.glsl";
 import { useFrame } from "@react-three/fiber";
 import { mergeGeometries } from "three/examples/jsm/utils/BufferGeometryUtils.js";
 import { useControls } from "leva";
+import { FallingLeaves } from "./FallingLeaves";
 
 type GLTFResult = GLTF & {
   nodes: {
@@ -83,7 +84,7 @@ export function Tree(props: JSX.IntrinsicElements["group"]) {
       quaternion.setFromEuler(rotation);
 
       // Set the matrix for this instance
-      matrix.compose(position, quaternion, new THREE.Vector3(0.4, 0.4, 0.4));
+      matrix.compose(position, quaternion, new THREE.Vector3(0.3 + Math.random() * 0.1, 0.3 + Math.random() * 0.1, 0.3 + Math.random() * 0.1));
       leaf.applyMatrix4(matrix);
 
       // Normal
@@ -114,7 +115,7 @@ export function Tree(props: JSX.IntrinsicElements["group"]) {
   }, []);
 
   return (
-    <group>
+    <>
       <mesh geometry={mergedGeometry}>
         <CustomShaderMaterial
           baseMaterial={THREE.MeshStandardMaterial}
@@ -129,7 +130,8 @@ export function Tree(props: JSX.IntrinsicElements["group"]) {
       <group {...props} dispose={null}>
         <mesh geometry={nodes.Cube001.geometry} material={nodes.Cube001.material} />
       </group>
-    </group>
+      <FallingLeaves />
+    </>
   );
 }
 

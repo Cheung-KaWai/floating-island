@@ -25,10 +25,14 @@ void main() {
   float posX = remap(csm_Position.x,5.,-10., 0., 1.);
   float posY = remap(csm_Position.y,9.,20., 0., 1.);
 
-  vec4 noiseV1 = texture2D(uNoise, vec2(posX, posZ));
+  float noiseV1 = texture2D(uNoise, vec2(0.3, abs(sin(uTime*0.1)))).r;
+  float noiseV2 = texture2D(uNoise, vec2(posX, posY)).r;
 
-  csm_Position.z   += posY * sin(uTime*2.5 + noiseV1.r * 5.) * 0.3;
-  csm_Position.x   += posY * sin(uTime*2.5 + noiseV1.g * 5.) * 0.3;
+  csm_Position.z -= (0.1 + posY) * noiseV1*3.;
+  
+
+  csm_Position.z   += (0.1 + posY) * sin(uTime *5.+ noiseV2 * 15.) * 0.4;
+  csm_Position.x   += (0.1 + posY) * sin(uTime * 5. + noiseV2 * 20.) * 0.3;
 
   float distanceCenter = distance(csm_Position, vec3(0., 11., 0.));
   float distanceRight = distance(csm_Position, vec3(-10., 0.,-10.));
