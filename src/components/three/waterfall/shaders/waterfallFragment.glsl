@@ -60,24 +60,24 @@ void main() {
     vec3 normal2 = normalize(vNormal2);
     vec3 light = vec3(0.0);
 
-    light += directionalLight(
-        vec3(1., 1., 3.), // color
-        0.5, // intensity
-        normal2, 
-        vec3(5.,10.,0.), // position
-        viewDirection, 
-        1. // specular power
-    );
+    // light += directionalLight(
+    //     vec3(1., 1., 3.), // color
+    //     0.5, // intensity
+    //     normal2, 
+    //     vec3(.,5.,0.), // position
+    //     viewDirection, 
+    //     1. // specular power
+    // );
 
     light += pointLight(
         vec3(1., 1., 3.), // color
-        0.5, // intensity
+        1., // intensity
         normal2, 
-        vec3(15.,7.,0.), // position
+        vec3(20.,10.,0.), // position
         viewDirection, 
         1., // specular power
         vPosition,
-        1.
+        0.01
     );
 
 
@@ -93,6 +93,9 @@ void main() {
     uv += distortion;
     uv.y -= uTime * 1.5;
     uv.x *=2.;
+
+    float fresnel = dot(viewDirection, normal2) + 1.0;
+    fresnel = pow(fresnel, 2.0);
     
     // Generate Voronoi pattern
     vec3 c = voronoi(uv);

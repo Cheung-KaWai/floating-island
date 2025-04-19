@@ -18,7 +18,7 @@ type GLTFResult = GLTF & {
 export function Waterfall(props: JSX.IntrinsicElements["group"]) {
   const { nodes } = useGLTF("/waterfall-transformed.glb") as GLTFResult;
 
-  useControls({
+  useControls("waterfall", {
     uVeronoiScale: { value: 2, min: 0.1, max: 10, step: 0.1, onChange: (value) => (uniforms.uVeronoiScale.value = value) },
     uWaterColor: {
       value: "#367e96",
