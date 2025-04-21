@@ -4,16 +4,21 @@ import { GLTF } from "three-stdlib";
 
 type GLTFResult = GLTF & {
   nodes: {
-    Icosphere001: THREE.Mesh;
+    Icosphere001_1: THREE.Mesh;
+    Icosphere001_2: THREE.Mesh;
   };
-  materials: object;
+  materials: {
+    ISLAND: THREE.MeshStandardMaterial;
+    GROUND: THREE.MeshStandardMaterial;
+  };
 };
 
 export function Island(props: JSX.IntrinsicElements["group"]) {
-  const { nodes } = useGLTF("/island-transformed.glb") as GLTFResult;
+  const { nodes, materials } = useGLTF("/island-transformed.glb") as GLTFResult;
   return (
     <group {...props} dispose={null}>
-      <mesh geometry={nodes.Icosphere001.geometry} material={nodes.Icosphere001.material} />
+      <mesh geometry={nodes.Icosphere001_1.geometry} material={materials.ISLAND} />
+      <mesh geometry={nodes.Icosphere001_2.geometry} material={materials.GROUND} />
     </group>
   );
 }

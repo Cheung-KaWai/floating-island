@@ -44,8 +44,6 @@ export function Waterfall(props: JSX.IntrinsicElements["group"]) {
     uniforms.uTime.value = state.clock.getElapsedTime();
   });
 
-  console.log(nodes.water.geometry);
-
   return (
     <group {...props} dispose={null}>
       <mesh geometry={nodes.water.geometry}>
