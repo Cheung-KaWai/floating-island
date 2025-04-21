@@ -67,4 +67,5 @@ void main(){
   vec3 color = baseColour * lightning + specular * 0.25;
   color *= ao;
   gl_FragColor = vec4(color,1.0);
+  
 }

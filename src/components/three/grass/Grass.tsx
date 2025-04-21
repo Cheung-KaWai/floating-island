@@ -37,7 +37,6 @@ export const Grass = () => {
       indices[i * 12 + 10] = fi + 1;
       indices[i * 12 + 11] = fi + 2;
     }
-    console.log(indices);
     const geo = new InstancedBufferGeometry();
     geo.instanceCount = numGrass;
     geo.setIndex(indices);
@@ -53,8 +52,6 @@ export const Grass = () => {
       uGrassData: new Uniform(grassData),
     };
   }, []);
-
-  console.log(geometry);
 
   useFrame(({ clock }) => {
     uniforms.uTime.value = clock.getElapsedTime();

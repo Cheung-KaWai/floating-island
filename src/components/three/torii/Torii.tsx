@@ -7,17 +7,44 @@ Files: stairs.glb [4.74KB] > /Users/kawai/Desktop/floating-island/public/stairs-
 import * as THREE from "three";
 import { useGLTF } from "@react-three/drei";
 import { GLTF } from "three-stdlib";
-
+import CustomShaderMaterial from "three-custom-shader-material";
+import vertexShader from "./shaders/ToriiVertex.glsl";
+import fragmentShader from "./shaders/ToriiFragment.glsl";
+import { useMemo } from "react";
+import { useFrame } from "@react-three/fiber";
+import { useControls } from "leva";
 type GLTFResult = GLTF & {
   nodes: {
     Circle001: THREE.Mesh;
+    Cube: THREE.Mesh;
     Cube006: THREE.Mesh;
+    Plane: THREE.Mesh;
   };
-  materials: object;
+  materials: {
+    ["Material.001"]: THREE.MeshStandardMaterial;
+    ["Material.002"]: THREE.MeshStandardMaterial;
+  };
 };
 
 export function Torii(props: JSX.IntrinsicElements["group"]) {
-  const { nodes } = useGLTF("/torii-transformed.glb") as GLTFResult;
+  const { nodes, materials } = useGLTF("/torii.glb") as GLTFResult;
+
+  useControls("portal", {
+    uColor: { value: "#06f7ff", onChange: (e) => (uniforms.uColor.value = new THREE.Color(e)) },
+    uColor2: { value: "#ffffff", onChange: (e) => (uniforms.uColor2.value = new THREE.Color(e)) },
+  });
+
+  const uniforms = useMemo(() => {
+    return {
+      uTime: { value: 0 },
+      uColor: { value: new THREE.Color("#000000") },
+      uColor2: { value: new THREE.Color("#000000") },
+    };
+  }, []);
+
+  useFrame(({ clock }) => {
+    uniforms.uTime.value = clock.getElapsedTime();
+  });
   return (
     <group {...props} dispose={null}>
       <mesh
@@ -34,6 +61,23 @@ export function Torii(props: JSX.IntrinsicElements["group"]) {
         rotation={[0, -0.46631, 0]}
         scale={0.614035}
       />
+      <mesh
+        geometry={nodes.Cube.geometry}
+        material={materials["Material.002"]}
+        position={[4.218986, 5.542731, 11.320509]}
+        rotation={[0, -0.470353, 0]}
+        scale={[1.889774, 0.666026, 0.78109]}
+      />
+      <mesh geometry={nodes.Plane.geometry} position={[4.265103, 8.438995, 11.307824]} rotation={[Math.PI / 2, 0, 0.448317]} scale={2.362602}>
+        <CustomShaderMaterial
+          baseMaterial={THREE.MeshStandardMaterial}
+          fragmentShader={fragmentShader}
+          vertexShader={vertexShader}
+          uniforms={uniforms}
+          transparent
+          side={THREE.DoubleSide}
+        />
+      </mesh>
     </group>
   );
 }

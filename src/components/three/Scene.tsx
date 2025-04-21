@@ -16,7 +16,7 @@ export const Scene = () => {
         <Island />
         <Rock />
         <Splash />
-        <CameraControls camera-position={[25, 12, -9]} />
+        <CameraControls camera-position={[25, 15, -9]} />
         <Environment preset="sunset" />
         <Tree />
         <Grass />
