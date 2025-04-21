@@ -1,6 +1,6 @@
 varying vec3 vColour;
 varying vec4 vGrassData;
-varying vec3 vNormal;
+varying vec3 vNormal2;
 varying vec3 vWorldPosition;
 
 float inverseLerp(float v, float minValue, float maxValue) {
@@ -50,17 +50,17 @@ void main(){
   vec3 baseColour = mix(vColour* 0.75, vColour, smoothstep(0.125,0.,abs(grassX)));
 
   vec2 vUv = vec2(vGrassData.z,vGrassData.y);
-  vec3 normal = normalize(vNormal);
+  vec3 normal2 = normalize(vNormal2);
   vec3 viewDir = normalize(cameraPosition - vWorldPosition);
   vec3 c1 = vec3(1.,1.,0.75);
   vec3 c2 = vec3(0.05,0.05,0.25);
-  vec3 ambientLightning  = hemiLight(normal, c2, c1);
+  vec3 ambientLightning  = hemiLight(normal2, c2, c1);
 
   vec3 lightDir = normalize(vec3(-1.,0.5,1.));
   vec3 lightColour = vec3(1.,1.,1.);
-  vec3 diffuseLightning = lambertLight(normal, viewDir, lightDir, lightColour);
+  vec3 diffuseLightning = lambertLight(normal2, viewDir, lightDir, lightColour);
 
-  vec3 specular = phongSpecular(normal, lightDir, viewDir);
+  vec3 specular = phongSpecular(normal2, lightDir, viewDir);
   float ao = remap(pow(grassY,1.),0.,1.,0.125,1.);
   vec3 lightning = ambientLightning * 0.5 + diffuseLightning * 0.5;
 

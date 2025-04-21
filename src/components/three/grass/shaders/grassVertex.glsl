@@ -1,9 +1,9 @@
 uniform vec4 uGrassParams;
-varying vec3 vNormal;
+varying vec3 vNormal2;
 varying vec3 vWorldPosition;
-#define PI 3.14159265358979323846
 uniform float uTime;
 uniform sampler2D uGrassData;
+#define PIPI 3.14159265358979323846
 
 // return a value between 0 and 1 based on the given value and the min and max range
 float inverseLerp(float v,float minValue,float maxValue){
@@ -133,7 +133,7 @@ void main(){
   vec4 grassAlpha = texture(uGrassData, tilDataUV);
 
 
-  float angle = remap(hashVal.x,-1., 1., -PI, PI);
+  float angle = remap(hashVal.x,-1., 1., -PIPI, PIPI);
 
   // grassOffset = vec3(float(gl_InstanceID) * 0.5 - 8.0, 0.0, 0.0);
   // angle = float(gl_InstanceID) * 0.2;
@@ -187,16 +187,16 @@ void main(){
   grassLocalNormal = mix(grassLocalNormal, vec3(0.,1.,0.), distanceBlend*0.5);
   grassLocalNormal = normalize(grassLocalNormal);
 
-  vec4 mvPosition = modelViewMatrix * vec4(grassLocalPosition,1.0);
+  vec4 mvPosition2 = modelViewMatrix * vec4(grassLocalPosition,1.0);
   vec3 viewDir = normalize(cameraPosition - grassBladeWorldPos);
   vec3 grassFaceNormal = grassMat * vec3(0.,0.,-zSide);
 
   float viewDotNormal = test(dot(grassFaceNormal, viewDir));
   float viewSpaceThickenFactor = easeOut(1. - viewDotNormal, 4.) * smoothstep(0.,0.2,viewDotNormal);
 
-  mvPosition.x += viewSpaceThickenFactor* (xSide - 0.5 ) * width* 0.5 * -zSide;
+  mvPosition2.x += viewSpaceThickenFactor* (xSide - 0.5 ) * width* 0.5 * -zSide;
 
-  gl_Position	 = projectionMatrix * mvPosition;
+  gl_Position	 = projectionMatrix * mvPosition2;
   // vColour = mix(BASE_COLOUR,TIP_COLOUR,heightPercent);
 
   vec3 c1 = mix(BASE_COLOUR, TIP_COLOUR, heightPercent);
@@ -205,6 +205,6 @@ void main(){
   vColour = mix(c1, c2, smoothstep(-1.0, 1.0, noiseValue));
   // vColour = grassLocalNormal;
   vGrassData = vec4(x,heightPercent,xSide,0.);
-  vNormal = normalize((modelMatrix * vec4(grassLocalNormal,0.0)).xyz);
+  vNormal2 = normalize((modelMatrix * vec4(grassLocalNormal,0.0)).xyz);
   vWorldPosition = (modelMatrix * vec4(grassLocalPosition,1.0)).xyz;
 }

@@ -59,7 +59,13 @@ export const Grass = () => {
 
   return (
     <mesh geometry={geometry} position={[0, 4.9, 0]} rotation={[0, Math.PI, 0]}>
-      <shaderMaterial fragmentShader={fragment} vertexShader={vertex} uniforms={uniforms} side={FrontSide} />
+      <shaderMaterial
+        // baseMaterial={MeshStandardMaterial}
+        fragmentShader={fragment}
+        vertexShader={vertex}
+        uniforms={uniforms}
+        side={FrontSide}
+      />
     </mesh>
   );
 };

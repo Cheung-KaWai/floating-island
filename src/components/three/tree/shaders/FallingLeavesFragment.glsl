@@ -27,7 +27,7 @@ void main() {
   float mixColor = clamp(vDistance, 0.0, 1.0);
 
   vec3 color = mix(uColor, uColor2, mixColor);
-  csm_FragColor = vec4(color * color, leaf.r);
+   csm_DiffuseColor = vec4(color * color, leaf.r);
    #include <tonemapping_fragment>
    #include <colorspace_fragment>
 }
