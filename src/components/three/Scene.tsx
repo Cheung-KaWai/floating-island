@@ -8,6 +8,7 @@ import { Rock } from "./waterfall/Rock";
 import { Tree } from "./tree/Tree";
 import { Grass } from "./grass/Grass";
 import { Torii } from "./torii/Torii";
+import { SleepyFatCat } from "./SleepyFatCat";
 export const Scene = () => {
   return (
     <Container $width="100svw">
@@ -17,10 +18,11 @@ export const Scene = () => {
         <Rock />
         <Splash />
         <CameraControls camera-position={[25, 15, -9]} />
-        <Environment preset="sunset" />
+        <Environment preset="sunset" environmentIntensity={1} />
         <Tree />
         <Grass />
         <Torii />
+        <SleepyFatCat />
       </Canvas>
     </Container>
   );
