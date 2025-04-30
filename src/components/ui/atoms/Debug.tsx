@@ -16,5 +16,5 @@ export const Debug = () => {
     },
   });
 
-  return <Leva collapsed oneLineLabels />;
+  return <Leva collapsed oneLineLabels hidden />;
 };
