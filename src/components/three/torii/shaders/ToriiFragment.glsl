@@ -1,4 +1,3 @@
-
 uniform float uTime;
 varying vec2 vUv;
 uniform vec3 uColor;
@@ -283,11 +282,12 @@ void main() {
     );
     
     float c = ( r + st.x * 5. ) / 6.;
+    
+    vec3 color = mix(uColor, uColor2, c);
+    float alpha = 1.0 - smoothstep(0.3, 0.8, c);
+    vec4 fragColor = vec4(color, alpha);
 
-    float alpha = step(0.5, c);
-
-    vec3 color = mix(uColor,uColor2,clamp(strength,0.,1.));
-    csm_DiffuseColor = vec4(color,1. - alpha);
+    csm_FragColor = fragColor;
 
     #include <tonemapping_fragment>
     #include <colorspace_fragment>

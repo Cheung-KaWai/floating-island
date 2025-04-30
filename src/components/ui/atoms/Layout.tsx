@@ -30,24 +30,25 @@ const LayoutContainer = styled.div<Partial<LayoutProps>>`
   align-items: ${(props) => props.$alignItems};
   justify-content: ${(props) => props.$justifyContent};
   gap: ${(props) => (props.$gap ? props.$gap + "rem" : null)};
-  ${(props) =>
-    props.$debug &&
-    css`
-      padding: ${props.$debugDetails ? "0.8rem" : null};
-      border: 1px dashed rgba(${props.$debugColor});
-      background-color: rgba(${props.$debugColor}, 0.1);
+  background: linear-gradient(184deg, #fff6e7 0%, #c1d9ff 100%)
+    ${(props) =>
+      props.$debug &&
+      css`
+        padding: ${props.$debugDetails ? "0.8rem" : null};
+        border: 1px dashed rgba(${props.$debugColor});
+        background-color: rgba(${props.$debugColor}, 0.1);
 
-      &::after {
-        content: "${props.$debugDetails ? "Layout" : ""}";
-        text-transform: uppercase;
-        display: block;
-        position: absolute;
-        bottom: 0;
-        right: 0px;
-        font-size: 6px;
-        color: red;
-        letter-spacing: 1px;
-        font-weight: 800;
-      }
-    `}
+        &::after {
+          content: "${props.$debugDetails ? "Layout" : ""}";
+          text-transform: uppercase;
+          display: block;
+          position: absolute;
+          bottom: 0;
+          right: 0px;
+          font-size: 6px;
+          color: red;
+          letter-spacing: 1px;
+          font-weight: 800;
+        }
+      `};
 `;

@@ -30,8 +30,8 @@ export function Torii(props: JSX.IntrinsicElements["group"]) {
   const { nodes, materials } = useGLTF("/torii.glb") as GLTFResult;
 
   useControls("portal", {
-    uColor: { value: "#06f7ff", onChange: (e) => (uniforms.uColor.value = new THREE.Color(e)) },
-    uColor2: { value: "#ffffff", onChange: (e) => (uniforms.uColor2.value = new THREE.Color(e)) },
+    uColor: { value: "#000", onChange: (e) => (uniforms.uColor.value = new THREE.Color(e)) },
+    uColor2: { value: "#63cbff", onChange: (e) => (uniforms.uColor2.value = new THREE.Color(e)) },
   });
 
   const uniforms = useMemo(() => {
